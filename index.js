@@ -1,18 +1,14 @@
-const express = require('express');
-const app = express();
-const http = require('http');
-const server = http.createServer(app);
-const { Server } = require("socket.io");
-const io = new Server(server);
+const { Server } = require('socket.io');
+const monitor = require('./services/monitor');
+const { getPathList } = require('./utils/file');
 
-app.get('/', (req, res) => {
-  res.send(process.argv)
+const io = new Server(3000, {
+  cors: {
+    origin: '*',
+    methods: ['GET', 'POST']
+  }
 });
 
-io.on('connection', (socket) => {
-  console.log('a user connected');
-});
+const pathes = getPathList();
 
-server.listen(8000, () => {
-  console.log('listening on localhost:8000');
-});
+monitor(io, pathes);
