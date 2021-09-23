@@ -1,4 +1,4 @@
-const { getBasename, isDirectory } = require('../utils/file')
+const { getBasename } = require('../utils/file')
 const watcher = require('./watcher')
 
 class Connection {
@@ -59,10 +59,10 @@ class Connection {
   }
 }
 
-function chat(io, pathes) {
+function monitor(io, pathes) {
   io.on('connection', (socket) => {
-    new Connection(io, socket, pathes);   
+    new Connection(io, socket, pathes);
   });
 };
 
-module.exports = chat;
+module.exports = { monitor, Connection };
